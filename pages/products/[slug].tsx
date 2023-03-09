@@ -2,6 +2,7 @@ import createContentfulClient from "@/contentful/client";
 import { TypeProduct, TypeProductFields } from "@/contentful/models/product";
 import { Asset, AssetFile } from "contentful";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import Image from "next/image";
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -49,28 +50,33 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
   const { name, description, price } = product.fields;
 
   return (
-    <main className="container">
-      <div className="grid">
-        <div>
-          <div className="headings">
-            <h1>{name as string}</h1>
-            <h2>
-              <strong>${price as number}</strong>
-            </h2>
+    <>
+      <Head>
+        <title>{name + " - My Store"}</title>
+      </Head>
+      <main className="container">
+        <div className="grid">
+          <div>
+            <div className="headings">
+              <h1>{name as string}</h1>
+              <h2>
+                <strong>${price as number}</strong>
+              </h2>
+            </div>
+            <p>{description as string}</p>
+            <button>Add to cart</button>
           </div>
-          <p>{description as string}</p>
-          <button>Add to cart</button>
+          <div>
+            <Image
+              src={"https:" + imageFile.url}
+              alt=""
+              width={imageFile.details.image?.width}
+              height={imageFile.details.image?.height}
+            />
+          </div>
         </div>
-        <div>
-          <Image
-            src={"https:" + imageFile.url}
-            alt=""
-            width={imageFile.details.image?.width}
-            height={imageFile.details.image?.height}
-          />
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
